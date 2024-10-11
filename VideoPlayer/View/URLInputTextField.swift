@@ -33,7 +33,7 @@ struct URLInputTextField: View {
 					// TODO: Button click action
 					print("Button clicked")
 				} label: {
-					Image(systemName: "arrow.up.circle.fill")
+					Image(systemName: "play.circle")
 						.foregroundColor(Color(uiColor: .systemBlue))
 						.font(.title)
 						.padding(.trailing, 3)

@@ -9,20 +9,36 @@ import SwiftUI
 
 struct RecentlyPlayedList: View {
 	@State var videos: [Video]
+	@State var selectedVideo: Video?
 
 	var body: some View {
-		List(videos) { video in
-			Button {
-				// TODO: Button action
-				print("VideoThumbnailItem tapped")
-			} label: {
-				VideoThumbnailItem(video: video)
+		NavigationView {
+			List(videos) { video in
+				Button {
+					// TODO: Button action
+					print("VideoThumbnailItem tapped")
+					selectedVideo = video
+				} label: {
+					VideoThumbnailItem(video: video)
+				}
+				.listRowSeparator(.hidden)
 			}
-			.listRowSeparator(.hidden)
+			.listStyle(PlainListStyle())
+			.navigationTitle("Recent Played Videos")
+			.navigationBarTitleDisplayMode(.inline)
+			.fullScreenCover(isPresented: Binding<Bool>(
+				get: { selectedVideo != nil },
+				set: { isPresented in
+					if !isPresented {
+						selectedVideo = nil
+					}
+				}
+			)) {
+				if let video = selectedVideo {
+					PlayerView(viewModel: .init(video: video))
+				}
+			}
 		}
-		.listStyle(PlainListStyle())
-		.navigationTitle("Recent Played Videos")
-		.navigationBarTitleDisplayMode(.inline)
 	}
 }
 

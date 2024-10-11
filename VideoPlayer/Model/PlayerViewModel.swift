@@ -27,10 +27,12 @@ class PlayerViewModel: PlayerViewModelType {
 	let input = PlayerInput()
 	var output = PlayerOutput()
 	
-	private var playerSubject = CurrentValueSubject<AVPlayer?, Never>(AVPlayer(url: URL(string: "https://media.w3.org/2010/05/sintel/trailer.mp4")!))
+	private var playerSubject: CurrentValueSubject<AVPlayer?, Never>
 	private var cancellables = Set<AnyCancellable>()
 	
-	init() {
+	init(video: Video) {
+		playerSubject = .init(AVPlayer(url: video.url))
+		
 		playerSubject
 			.assign(to: \.player, on: self.output)
 			.store(in: &cancellables)

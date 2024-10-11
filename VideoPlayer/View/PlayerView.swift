@@ -6,26 +6,44 @@
 //
 
 import SwiftUI
-import Combine
 import AVKit
 
 struct PlayerView: View {
-	private let viewModel: PlayerViewModel
+	@Environment(\.dismiss) var dismiss
 	@ObservedObject private var output: PlayerOutput
+
+	private let viewModel: PlayerViewModel
 	
-	init(viewModel: PlayerViewModel = .init()) {
+	init(viewModel: PlayerViewModel) {
 		self.viewModel = viewModel
 		self.output = viewModel.output
 	}
 	
     var body: some View {
-		VideoPlayer(player: output.player)
-			.onAppear {
-				viewModel.input.playPauseSubject.send(true)
+		VStack {
+			HStack {
+				// TODO: Landscape to hide dismiss button
+				Button {
+					dismiss()
+				} label: {
+					Image(systemName: "xmark.circle")
+				}
+				.font(.title2)
+				.foregroundStyle(Color.gray)
+				.padding(.leading, 18)
+				.padding(.bottom, 4)
+				
+				Spacer()
 			}
+			
+			VideoPlayer(player: output.player)
+				.onAppear {
+					viewModel.input.playPauseSubject.send(true)
+				}
+		}
     }
 }
 
 #Preview {
-	PlayerView()
+	PlayerView(viewModel: .init(video: .mock))
 }

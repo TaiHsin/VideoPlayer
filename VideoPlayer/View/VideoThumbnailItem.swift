@@ -26,7 +26,7 @@ extension Video {
 	static var mocks: [Self] {
 		[
 			.init(id: .init(), url: URL(string: "https://media.w3.org/2010/05/sintel/trailer.mp4")!, title: "Trailer"),
-			.init(id: .init(), url: URL(string: "https://media.w3.org/2010/05/sintel/trailer.mp4")!, title: "Trailer"),
+			.init(id: .init(), url: URL(string: "https://www.w3schools.com/html/mov_bbb.mp4")!, title: "bbb"),
 			.init(id: .init(), url: URL(string: "https://media.w3.org/2010/05/sintel/trailer.mp4")!, title: "Trailer")
 		]
 	}
