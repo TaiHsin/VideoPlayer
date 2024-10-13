@@ -1,5 +1,5 @@
 //
-//  URLInputTextField.swift
+//  URLTextField.swift
 //  VideoPlayer
 //
 //  Created by Taihsin L on 2024/10/9.
@@ -7,17 +7,16 @@
 
 import SwiftUI
 
-struct URLInputTextField: View {
-	private let viewModel: TextFieldViewModel
-	@ObservedObject var output: TextFieldOutput
+struct URLTextField: View {
+	private let viewModel: URLTextFieldViewModel
+	@ObservedObject var output: URLTextFieldOutput
 	
-	init(viewModel: TextFieldViewModel = .init()) {
+	init(viewModel: URLTextFieldViewModel = .init()) {
 		self.viewModel = viewModel
 		self.output = viewModel.output
 	}
 
 	var body: some View {
-
 		ZStack(alignment: .bottom) {
 			TextField(" Input video url and play",
 					  text: Binding(
@@ -49,14 +48,14 @@ struct URLInputTextField: View {
 			}
 			.padding(.bottom, 5)
 			.fullScreenCover(isPresented: Binding<Bool>(
-				get: { viewModel.output.selectedVideoURL != nil },
+				get: { output.selectedVideoURL != nil },
 				set: { isPresented in
 					if !isPresented {
 						viewModel.input.textChanged.send("")
 					}
 				}
 			)) {
-				if let videoURL = viewModel.output.selectedVideoURL {
+				if let videoURL = output.selectedVideoURL {
 					PlayerView(viewModel: .init(video: .init(id: .init(), url: videoURL, title: "yoyoyo")))
 				}
 			}
@@ -66,5 +65,5 @@ struct URLInputTextField: View {
 }
 
 #Preview {
-    URLInputTextField()
+    URLTextField()
 }

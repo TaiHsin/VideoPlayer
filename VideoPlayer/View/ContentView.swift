@@ -11,8 +11,8 @@ struct ContentView: View {
 
     var body: some View {
         VStack {
-			URLInputTextField()
 			RecentlyPlayedList(videos: Video.mocks)
+			URLTextField()
 		}
         .padding()
     }

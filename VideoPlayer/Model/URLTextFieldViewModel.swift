@@ -1,5 +1,5 @@
 //
-//  URLInputTextFieldViewModel.swift
+//  URLTextFieldViewModel.swift
 //  VideoPlayer
 //
 //  Created by Taihsin L on 2024/10/13.
@@ -9,19 +9,19 @@ import Foundation
 import Combine
 import UIKit
 
-struct TextFieldInput {
+struct URLTextFieldInput {
 	let buttonDidTapSubject = PassthroughSubject<Void, Never>()
 	let textChanged = PassthroughSubject<String, Never>()
 }
 
-class TextFieldOutput: ObservableObject {
+class URLTextFieldOutput: ObservableObject {
 	@Published var urlText: String = ""
 	@Published var selectedVideoURL: URL?
 }
 
-class TextFieldViewModel {
-	let input = TextFieldInput()
-	let output = TextFieldOutput()
+class URLTextFieldViewModel {
+	let input = URLTextFieldInput()
+	let output = URLTextFieldOutput()
 	
 	private let application: UIApplication
 	private var cancellables = Set<AnyCancellable>()
