@@ -23,6 +23,7 @@ class PlayerOutput: ObservableObject {
 	@Published var isPlayingSubject = CurrentValueSubject<Bool, Never>(false)
 }
 
+// TODO: Error handling
 class PlayerViewModel: PlayerViewModelType {
 	let input = PlayerInput()
 	var output = PlayerOutput()
