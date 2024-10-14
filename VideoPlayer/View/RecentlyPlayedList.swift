@@ -8,33 +8,37 @@
 import SwiftUI
 
 struct RecentlyPlayedList: View {
-	@State var videos: [Video]
-	@State var selectedVideo: Video?
+	private let viewModel: RecentlyPlayedViewModel
+	@ObservedObject var output: RecentlyPlayedOutput
+
+	init(viewModel: RecentlyPlayedViewModel = .init()) {
+		self.viewModel = viewModel
+		self.output = viewModel.output
+	}
 
 	var body: some View {
 		NavigationView {
-			List(videos) { video in
+			List(output.videos) { video in
 				Button {
-					// TODO: Button action
-					print("VideoThumbnailItem tapped")
-					selectedVideo = video
+					viewModel.input.itemDidTapSubject.send(video)
 				} label: {
 					VideoThumbnailItem(video: video)
 				}
+				.padding(.bottom, 8)
 				.listRowSeparator(.hidden)
 			}
 			.listStyle(PlainListStyle())
 			.navigationTitle("Recent Played Videos")
 			.navigationBarTitleDisplayMode(.inline)
 			.fullScreenCover(isPresented: Binding<Bool>(
-				get: { selectedVideo != nil },
+				get: { output.selectedVideo != nil },
 				set: { isPresented in
 					if !isPresented {
-						selectedVideo = nil
+						viewModel.input.itemDidTapSubject.send(nil)
 					}
 				}
 			)) {
-				if let video = selectedVideo {
+				if let video = output.selectedVideo {
 					PlayerView(viewModel: .init(video: video))
 				}
 			}
@@ -43,5 +47,5 @@ struct RecentlyPlayedList: View {
 }
 
 #Preview {
-	RecentlyPlayedList(videos: Video.mocks)
+	RecentlyPlayedList()
 }
