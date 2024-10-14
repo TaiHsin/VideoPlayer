@@ -6,6 +6,7 @@
 //
 
 import Combine
+import Foundation
 
 struct RecentlyPlayedInput {
 	let itemDidTapSubject = PassthroughSubject<Video?, Never>()
@@ -20,16 +21,29 @@ class RecentlyPlayedViewModel {
 	let input = RecentlyPlayedInput()
 	let output = RecentlyPlayedOutput()
 	
+	private let inputURLPublisher: AnyPublisher<URL?, Never>?
 	private let fetchTitleSubject = PassthroughSubject<Void, Never>()
 	private let fetchImagesSubject = PassthroughSubject<Void, Never>()
 	private var cancellables = Set<AnyCancellable>()
 	
-	init() {
+	init(inputURLPublisher: AnyPublisher<URL?, Never>? = nil) {
+		self.inputURLPublisher = inputURLPublisher
 		setupBindings()
 		fetchVideoInfo()
 	}
 	
 	private func setupBindings() {
+		inputURLPublisher?
+			.compactMap { $0 }
+			.map { url -> Video in
+				Video(id: UUID(), url: url!, thumbnail: nil, title: "")
+			}
+			.sink { [weak self] newVideo in
+				self?.output.videos.append(newVideo)
+				self?.fetchVideoInfo()
+			}
+			.store(in: &cancellables)
+
 		input.itemDidTapSubject
 			.assign(to: \.selectedVideo, on: output)
 			.store(in: &cancellables)

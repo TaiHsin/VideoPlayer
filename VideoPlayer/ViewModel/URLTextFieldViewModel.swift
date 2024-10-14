@@ -15,7 +15,11 @@ struct URLTextFieldInput {
 
 class URLTextFieldOutput: ObservableObject {
 	@Published var urlText: String = ""
-	@Published var selectedVideoURL: URL?
+	@Published var inputVideoURL: URL?
+	
+	var inputVideoURLPublisher: AnyPublisher<URL?, Never> {
+		$inputVideoURL.eraseToAnyPublisher()
+	}
 }
 
 class URLTextFieldViewModel {
@@ -43,7 +47,7 @@ class URLTextFieldViewModel {
 				}
 				return url
 			}
-			.assign(to: \.selectedVideoURL, on: output)
+			.assign(to: \.inputVideoURL, on: output)
 			.store(in: &cancellables)
 	}
 }

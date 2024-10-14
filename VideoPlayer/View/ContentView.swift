@@ -8,11 +8,12 @@
 import SwiftUI
 
 struct ContentView: View {
+	let urlTextFieldViewModel = URLTextFieldViewModel()
 
     var body: some View {
         VStack {
-			URLTextField()
-			RecentlyPlayedList()
+			URLTextField(viewModel: urlTextFieldViewModel)
+			RecentlyPlayedList(viewModel: .init(inputURLPublisher: urlTextFieldViewModel.output.inputVideoURLPublisher))
 		}
         .padding()
     }

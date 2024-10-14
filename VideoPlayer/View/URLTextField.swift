@@ -48,14 +48,14 @@ struct URLTextField: View {
 			}
 			.padding(.bottom, 5)
 			.fullScreenCover(isPresented: Binding<Bool>(
-				get: { output.selectedVideoURL != nil },
+				get: { output.inputVideoURL != nil },
 				set: { isPresented in
 					if !isPresented {
 						viewModel.input.textChanged.send("")
 					}
 				}
 			)) {
-				if let videoURL = output.selectedVideoURL {
+				if let videoURL = output.inputVideoURL {
 					PlayerView(viewModel: .init(video: .init(id: .init(), url: videoURL, title: "yoyoyo")))
 				}
 			}
