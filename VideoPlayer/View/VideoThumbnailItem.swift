@@ -35,7 +35,7 @@ extension Video {
 
 // TODO: Add image fetched error 
 struct VideoThumbnailItem: View {
-	let video: Video
+	@Binding var video: Video
 
 	var body: some View {
 		VStack(alignment: .leading) {
@@ -67,5 +67,5 @@ struct VideoThumbnailItem: View {
 }
 
 #Preview {
-	VideoThumbnailItem(video: .mock)
+	VideoThumbnailItem(video: Binding(get: { .mock }, set: { _ in }))
 }

@@ -18,14 +18,15 @@ struct RecentlyPlayedList: View {
 
 	var body: some View {
 		NavigationView {
-			List(output.videos) { video in
-				Button {
-					viewModel.input.itemDidTapSubject.send(video)
-				} label: {
-					VideoThumbnailItem(video: video)
+			List {
+				ForEach($output.videos) { $video in
+					VideoThumbnailItem(video: $video)
+						.onTapGesture {
+							viewModel.input.itemDidTapSubject.send(video)
+						}
+						.padding(.bottom, 8)
+						.listRowSeparator(.hidden)
 				}
-				.padding(.bottom, 8)
-				.listRowSeparator(.hidden)
 			}
 			.listStyle(PlainListStyle())
 			.navigationTitle("Recently Played Videos")
