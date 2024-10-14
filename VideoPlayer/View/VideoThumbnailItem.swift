@@ -18,21 +18,22 @@ struct Video: Identifiable {
 extension Video {
 	static var mock: Self {
 		.init(id: .init(),
-			  url: URL(string: "https://media.w3.org/2010/05/sintel/trailer.mp4")!,
-			  title: "Trailer"
+			  url: URL(string: "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4")!,
+			  title: "Big Buck Bunny"
 		)
 	}
 	
 	static var mocks: [Self] {
 		[
-			.init(id: .init(), url: URL(string: "https://media.w3.org/2010/05/sintel/trailer.mp4")!, title: "Trailer"),
+			.init(id: .init(), url: URL(string: "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/WeAreGoingOnBullrun.mp4")!, title: "We Are Going On Bullrun"),
 			.init(id: .init(), url: URL(string: "https://www.w3schools.com/html/mov_bbb.mp4")!, title: "bbb"),
-			.init(id: .init(), url: URL(string: "https://media.w3.org/2010/05/sintel/trailer.mp4")!, title: "Trailer")
+			.init(id: .init(), url: URL(string: "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4")!, title: "Big Buck Bunny")
 		]
 	}
 }
 #endif
 
+// TODO: Add image fetched error 
 struct VideoThumbnailItem: View {
 	let video: Video
 

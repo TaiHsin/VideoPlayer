@@ -28,7 +28,7 @@ struct RecentlyPlayedList: View {
 				.listRowSeparator(.hidden)
 			}
 			.listStyle(PlainListStyle())
-			.navigationTitle("Recent Played Videos")
+			.navigationTitle("Recently Played Videos")
 			.navigationBarTitleDisplayMode(.inline)
 			.fullScreenCover(isPresented: Binding<Bool>(
 				get: { output.selectedVideo != nil },
