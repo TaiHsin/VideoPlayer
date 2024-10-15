@@ -33,12 +33,20 @@ struct URLTextField: View {
 					.background(Color.gray.opacity(0.1)
 						.clipShape(RoundedRectangle(cornerRadius: 25)))
 			)
+			.toolbar {
+				ToolbarItem(placement: .keyboard) {
+					Button("Done") {
+						dismissKeyboard()
+					}
+				}
+			}
 
 			HStack(alignment: .bottom) {
 				Spacer()
 				
 				Button {
 					viewModel.input.buttonDidTapSubject.send()
+					dismissKeyboard()
 				} label: {
 					Image(systemName: "play.circle")
 						.foregroundColor(Color(uiColor: .systemBlue))
@@ -62,6 +70,10 @@ struct URLTextField: View {
 		}
 		.padding(10)
     }
+	
+	private func dismissKeyboard() {
+		UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+	}
 }
 
 #Preview {
