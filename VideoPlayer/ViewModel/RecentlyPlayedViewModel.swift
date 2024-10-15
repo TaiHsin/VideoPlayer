@@ -21,14 +21,19 @@ class RecentlyPlayedViewModel {
 	let input = RecentlyPlayedInput()
 	let output = RecentlyPlayedOutput()
 	
+	private let persistentManager: PersistentManager
 	private let inputURLPublisher: AnyPublisher<URL?, Never>?
 	private let fetchTitleSubject = PassthroughSubject<Void, Never>()
 	private let fetchImagesSubject = PassthroughSubject<Void, Never>()
+	private let fetchPersistentVideosSubject = PassthroughSubject<Void, Never>()
 	private var cancellables = Set<AnyCancellable>()
 	
-	init(inputURLPublisher: AnyPublisher<URL?, Never>? = nil) {
+	init(inputURLPublisher: AnyPublisher<URL?, Never>? = nil,
+		 persistentManager: PersistentManager = .init()) {
 		self.inputURLPublisher = inputURLPublisher
+		self.persistentManager = persistentManager
 		setupBindings()
+		fetchVideosFromPersistent()
 		fetchVideoInfo()
 	}
 	
@@ -41,6 +46,7 @@ class RecentlyPlayedViewModel {
 			.sink { [weak self] newVideo in
 				self?.output.videos.append(newVideo)
 				self?.fetchVideoInfo()
+				self?.persistentManager.saveVideo(newVideo)
 			}
 			.store(in: &cancellables)
 
@@ -114,5 +120,9 @@ class RecentlyPlayedViewModel {
 	private func fetchVideoInfo() {
 		fetchImagesSubject.send()
 		fetchTitleSubject.send()
+	}
+	
+	private func fetchVideosFromPersistent() {
+		output.videos = persistentManager.fetchVideos()
 	}
 }

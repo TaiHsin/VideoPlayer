@@ -32,5 +32,3 @@ extension Video {
 	}
 }
 #endif
-
-
