@@ -32,7 +32,7 @@ struct RecentlyPlayedList: View {
 				}
 			}
 			.listStyle(PlainListStyle())
-			.navigationTitle("Recently Played Videos")
+			.navigationTitle(output.videos.isEmpty ? "" : "Recently Played Videos")
 			.navigationBarTitleDisplayMode(.inline)
 			.fullScreenCover(isPresented: Binding<Bool>(
 				get: { output.selectedVideo != nil },
