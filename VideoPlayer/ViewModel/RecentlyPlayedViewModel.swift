@@ -10,6 +10,7 @@ import Foundation
 
 struct RecentlyPlayedInput {
 	let itemDidTapSubject = PassthroughSubject<Video?, Never>()
+	let deleteVideoSubject = PassthroughSubject<IndexSet, Never>()
 }
 
 class RecentlyPlayedOutput: ObservableObject {
@@ -46,12 +47,20 @@ class RecentlyPlayedViewModel {
 			.sink { [weak self] newVideo in
 				self?.output.videos.append(newVideo)
 				self?.fetchVideoInfo()
-				self?.persistentManager.saveVideo(newVideo)
+				self?.persistentManager.save(video: newVideo)
 			}
 			.store(in: &cancellables)
 
 		input.itemDidTapSubject
 			.assign(to: \.selectedVideo, on: output)
+			.store(in: &cancellables)
+		
+		input.deleteVideoSubject
+			.sink { [weak self] indexSet in
+				let videosToDelete = indexSet.compactMap { self?.output.videos[$0] }
+				self?.output.videos.remove(atOffsets: indexSet)
+				self?.persistentManager.delete(videos: videosToDelete)
+			}
 			.store(in: &cancellables)
 		
 		fetchTitleSubject

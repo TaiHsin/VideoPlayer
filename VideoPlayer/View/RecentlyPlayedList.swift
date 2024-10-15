@@ -27,6 +27,9 @@ struct RecentlyPlayedList: View {
 						.padding(.bottom, 8)
 						.listRowSeparator(.hidden)
 				}
+				.onDelete {
+					viewModel.input.deleteVideoSubject.send($0)
+				}
 			}
 			.listStyle(PlainListStyle())
 			.navigationTitle("Recently Played Videos")

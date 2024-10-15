@@ -45,14 +45,28 @@ class PersistentManager {
 		return persistentContainer.viewContext
 	}
 	
-	func saveVideo(_ video: Video) {
+	func save(video: Video) {
 		let _ = video.toVideoEntity(context: context)
 		guard context.hasChanges else { return }
 		
+		saveContext()
+	}
+	
+	func delete(videos: [Video]) {
+		let request: NSFetchRequest<VideoEntity> = VideoEntity.fetchRequest()
+		
+		let ids = videos.map { $0.id }
+		request.predicate = NSPredicate(format: "id IN %@", ids)
+		
 		do {
-			try context.save()
+			let results = try context.fetch(request)
+			results.forEach {
+				context.delete($0)
+			}
+			
+			saveContext()
 		} catch {
-			print("Failed to save video with error: \(error)")
+			print("Failed to delete videos with error: \(error)")
 		}
 	}
 	
@@ -65,6 +79,15 @@ class PersistentManager {
 		} catch {
 			print("Failed to fetch videos with error: \(error)")
 			return []
+		}
+	}
+	
+	private func saveContext() {
+		guard context.hasChanges else { return }
+		do {
+			try context.save()
+		} catch {
+			print("Failed to save context with error: \(error)")
 		}
 	}
 }
